@@ -94,7 +94,6 @@ DATABASES = {
 
 
 DATABASES['default'].update(dj_database_url.config(
-    default="postgres://duxygezolgihls:64561c22d7c55d09d3595ba54c2a0304ae5430cc713ad1854abd0e3de86ad4ce@ec2-54-247-96-169.eu-west-1.compute.amazonaws.com:5432/d8n17mbpt77i8f",
     conn_max_age=500, ssl_require=True))
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
