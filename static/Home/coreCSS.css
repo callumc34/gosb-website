@@ -1,0 +1,35 @@
+a {
+	color: #D6A94A;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #231F20;
+}
+
+.boxText {
+	background-color: #231F20;
+	border: 3px solid #D6A94A;
+	box-sizing: content-box;
+	box-shadow: 4px 8px 16px 4px rgba(100, 100, 30, 0.5);
+}
+
+#Background {
+	background-color: #EAEAEA;
+}
+
+#Head {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 72px;
+	z-index: 9;
+}
+
+#Content {
+	padding: 84px;
+	text-align: center;
+	align-content: center;
+	align-items: center;
+}

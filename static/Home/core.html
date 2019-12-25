@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>Game Of Silly Battles</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Game Of Silly Battles home page">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}Home/coreCSS.css?{% now 'U' %}">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+	<div id="Content">
+		<div class="boxText">
+			<b><h2 style="color: #D6A94A"><u>This website is currently under construction and some aspects may not work!</u></h2></b>
+		</div><br>
+		<b style="color: #D6A94A"><h1>Check out the discord:</h1></b>
+		<iframe src="https://discordapp.com/widget?id=648080138088480768&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
+	</div>
+</body>

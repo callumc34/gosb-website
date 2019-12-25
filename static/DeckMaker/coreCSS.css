@@ -1,0 +1,225 @@
+
+::-webkit-scrollbar {
+ 	width: 20px;
+}
+
+::-webkit-scrollbar-corner {
+
+}
+
+::-webkit-scrollbar-track {
+  background: #EAEAEA;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #231F20;
+	border: none;
+	box-shadow: inset 0 0 1px #D6A94A, inset 0 1px 7px #D6A94A, 0 3px 6px -3px #D6A94A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #D6A94A;
+	border: none;
+	box-shadow: inset 0 0 1px #231F20, inset 0 1px 7px #231F20, 0 3px 6px -3px #231F20;
+}
+
+table, th, td {
+    border: 3px solid #D6A94A;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
+}
+
+td, th {
+	color: #D6A94A;
+	background-color: #231F20;
+	font-size: 10px;
+}
+
+caption {
+	font-size: 28px;
+}
+
+select {
+	font-size: 14px;
+	background-color: #231F20;
+	color: #D6A94A;
+	letter-spacing: 2px;
+	padding: 6px;
+}
+
+input {
+	font-size: 20px;
+	background-color: #231F20;
+	color: #D6A94A;
+	letter-spacing: 1px;
+	padding: 6px;
+	margin: 8px;
+}
+
+fieldset {
+	font-size: 16px;
+	letter-spacing: 1px;
+}
+
+legend {
+	font-size: 24px;
+	letter-spacing: 1px;
+}
+
+a {
+	color: #D6A94A;
+}
+
+a:hover {
+	color: #EAEAEA;
+}
+
+b {
+	color: #D6A94A;
+	padding: 16px;
+}
+
+.noUi-connect {
+	background: #D6A94A;
+}
+
+.noUi-handle {
+	background: #231F20;
+	border: none;
+	box-shadow: inset 0 0 1px #D6A94A, inset 0 1px 7px #D6A94A, 0 3px 6px -3px #D6A94A;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 14px;
+  width: 1px;
+  background: #EAEAEA;
+  left: 14px;
+  top: 6px;
+}
+
+[disabled] .noUi-connect {
+	background: #EEAEA;
+}
+
+.cardCount {
+	width: 140px;
+	display: block;
+}
+
+.cardImage {
+	width: 150px;
+	height: 225px;
+}
+
+.deckSection {
+	display: inline-block;
+	width: 400px;
+	vertical-align: top;
+	padding: 36px;
+}
+
+.deckHeader {
+	font-size: 24px;
+	text-align: center;
+	color: #D6A94A;
+	padding: 16px;
+	margin-left: 45px;
+}
+
+.boxText {
+	background-color: #231F20;
+	border: 3px solid #D6A94A;
+	box-sizing: content-box;
+	box-shadow: 4px 8px 16px 4px rgba(100, 100, 30, 0.5);
+}
+
+.deckList {
+	width: 100%;
+	height: 300px;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.deckList li {
+	padding: 8px 8px 8px 0px;
+	display: table-cell;
+}
+
+#Background {
+	background-color: #EAEAEA;
+}
+
+#Head {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 72px;
+	z-index: 9;
+}
+
+#Content {
+	padding: 84px 16px 16px 16px;
+	align-content: center;
+	align-items: center;
+}
+
+#CardCount {
+	position: absolute;
+	text-align: center;
+	font-size: 24px;
+	padding-left: 50px;
+	padding-bottom: 20px;
+}
+
+#TableDiv {
+	display: inline-block;
+	overflow: auto;
+	height: 1400px;
+	width: 350px;
+	padding-top: 12px;
+	padding-right: 12px;
+}
+
+#SelectionForm {
+	width: 100%;
+	align-items: center;
+	text-align: center;
+	font-size: 26px;
+	padding: 12px;
+}
+
+#DualSlider {
+	width: 200px;
+	display: inline-block;
+	margin-left: 20px;
+	margin-right: 20px;
+	height: 20px;
+}
+
+#SelectionTable {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+#DeckList {
+	position: absolute;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#TagList {
+	width: 100%;
+	height: 300px;
+	overflow-x: auto;
+	overflow-y: hidden;	
+}
+
+#DeckNameInput {
+	width: 200px;
+}

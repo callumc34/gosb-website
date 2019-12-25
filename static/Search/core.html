@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>GoSB Card Search</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Advanced search for a GoSB card">
+	<meta name="keywords" content="">
+	<link href="{{ STATIC }}Global/uiSlider/nouislider.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}Search/coreCSS.css?{% now 'U' %}">
+	<script src="{{ STATIC }}Search/core.js?{% now 'U' %}"></script>
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body, input, select {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<script src="{{ STATIC }}Global/uiSlider/nouislider.min.js"></script>
+	<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+	<div id="Content">
+		<form id="SearchForm">
+			<fieldset>
+				<legend>Advanced Search</legend>
+				<input type="checkbox" name="checkId">
+				Card ID:
+				<input type="number" name="ID" min="1" max="{{ NUM_CARDS }}" placeholder="1">
+				<input type="checkbox" name="checkSet">
+				Card Set:
+				<select type="text" name="cardSet" placeholder="Card Set">
+					{% for set in sets %}
+						<option value="{{ set }}">{{ set }}</option>
+					{% endfor %}
+				</select><br>
+				<input type="checkbox" name="checkName">
+				Card name:
+				<input type="text" id="NameInput" name="cardName" placeholder="Card Name"><br>
+				<input type="checkbox" name="checkDescription">
+				Description:
+				<input type="text" id="DescriptionInput" name="description" placeholder="Description"><br>
+				<input type="checkbox" name="checkCardAbility">
+				Card's ablity:
+				<select type="text" name="abilityType">
+					{% for fx in permFXs %}
+						<option value="{{ fx }}">{{ fx }}</option>
+					{% endfor %}
+				</select><br>
+				<input type="checkbox" name="checkCardType">
+				Card type:
+				<select type="text" name="cardType">
+					{% for type in cardTypes %}
+						<option value="{{ type }}">{{ type }}</option>	
+					{% endfor %}
+				</select><br>
+				<input type="checkbox" name="checkType1">
+				Type 1:
+				<select name="cardType1">
+					{% for type in types %}
+						<option value="{{ type }}">{{ type }}</option>	
+					{% endfor %}			
+				</select>
+				<input type="checkbox" name="checkType2">
+				Type 2:
+				<select name="cardType2">
+					{% for type in types %}
+						<option value="{{ type }}">{{ type }}</option>
+					{% endfor %}			
+				</select><br>
+				<input type="checkbox" name="checkRarity"> 
+				Rarity ID:
+				<select name="rarityId">
+					{% for rarity in raritys %}
+						<option value="{{ rarity }}">{{ rarity }}</option>
+					{% endfor %}				
+				</select>
+				<input type="checkbox" name="checkAspect">
+				Aspect ID:
+				<select name="aspectId">
+					{% for aspect in aspects %}
+						<option value="{{ aspect }}">{{ aspect }}</option>
+					{% endfor %}
+				</select><br>
+				<input type="checkbox" name="checkCollector">
+				Collector number:
+				<input type="number" name="collectorNumber" min="1" max="{{ collectorRanges.1 }}" placeholder="1" step="1"><br>
+				<input type="checkbox" name="checkTeam">
+				Team:
+				<select name="teamId">
+					{% for team in teams %}
+						<option value="{{ team }}">{{ team }}</option>
+					{% endfor %}
+				</select><br>
+				<input type="checkbox" class="checkCardId" name="checkCardIdRange" onchange="handleCheckbox(this, cardIdRange);">
+				Card ID Range:
+				<div class="slider" id="cardIdRange"></div>
+				<input type="number" name="idValueMin" min="0" max="{{ NUM_CARDS }}"
+					step="50" value="0">
+				<input type="number" name="idValueMax" min="0" max="{{ NUM_CARDS }}"
+					step="50" value="{{ NUM_CARDS }}"><br>
+				<input type="checkbox" class="checkAttack" name="checkAttack" onchange="handleCheckbox(this, attackRange);">
+				Attack Range:
+ 				<div class="slider" id="attackRange"></div>
+				<input type="number" name="attValueMin" min="0" max="{{ attRanges.1 }}"
+ 						step="50" value="0"> 				
+				<input type="number" name="attValueMax" min="0" max="{{ attRanges.1 }}"
+ 						step="50" value="{{ attRanges.1 }}"><br>
+				<input type="checkbox" class="checkDefence" name="checkDefence" onchange="handleCheckbox(this, defenceRange);">
+				Defence Range:
+				<div class="slider" id="defenceRange"></div>
+				<input type="number" name="defValueMin" min="0" max="{{ defRanges.1 }}"
+ 						step="50" value="0">
+ 				<input type="number" name="defValueMax" min="0" max="{{ defRanges.1 }}"
+ 						step="50" value="{{ defRanges.1 }}"><br>
+				<input type="checkbox" name="checkSpeed" onchange="handleCheckbox(this, speedRange);">
+				Speed Range:
+				<div class="slider" id="speedRange")></div>
+				<input type="number" name="spdValueMin" min="0" max="{{ spdRanges.1 }}"
+ 						step="50" value="0">
+				<input type="number" name="spdValueMax" min="0" max="{{ spdRanges.1 }}"
+ 						step="50" value="{{ spdRanges.1 }}"><br>
+				<input type="checkbox" name="checkHealth" onchange="handleCheckbox(this, healthRange);">
+				Health  Range:
+				<div class="slider" id="healthRange")></div>				
+				<input type="number" name="heaValueMin" min="0" max="{{ heaRanges.1 }}"
+ 						step="50" value="0">
+				<input type="number" name="heaValueMax" min="0" max="{{ heaRanges.1 }}"
+ 						step="50" value="{{ heaRanges.1 }}"><br>
+				<input type="checkbox" name="checkTp" onchange="handleCheckbox(this, tpRange);">
+				Total Points:
+				<div class="slider" id="tpRange")></div>
+				<input type="number" name="tpValueMin" min="0" max="{{ tpRanges.1 }}"
+ 						step="50" value="0">
+				<input type="number" name="tpValueMax" min="0" max="{{ tpRanges.1 }}"
+ 						step="50" value="{{ tpRanges.1 }}"><br>
+				<input type="checkbox" name="checkTitanBirth">
+				Titan Birth:
+				<select name="titanBirth">
+					{% for birth in titanBirths %}
+						<option value="{{ birth }}">{{ birth }}</option>
+					{% endfor %}
+				</select><br>
+				<input type="reset" value="Reset" onclick="sliders.resetSliders()">
+				<input type="button" value="Submit" onclick="window.location.href = {% url 'cardSearch' %} + new getVals().submitSearch();">
+			</fieldset>
+		</form>
+		{% if DISPLAY_CARDS %}
+			<table>
+				<b><caption>Search returned {{ TOTAL_CARDS }} results</caption></b>
+				<tr>
+					<th><b>Card ID</b></th>
+					<th><b>Card name</b></th>
+					<th><b>Card description</b></th>
+					<th><b>Power name</b></th>
+					<th><b>Power ability</b></th>
+					<th><b>Titan birth name</th></b>
+					<th><b>Titan birth ability</b></th>
+					<th><b>Card image</b></th>
+				</tr>				
+				{% for card in DISPLAY_CARDS %}
+				<tr>
+					<td style="font-size: 20px;"><b>{{ card.BasicCardID }}</a></b></td>
+					<td><b><a href="../viewCard/?ID={{ card.BasicCardID }}">{{ card.BasicCardName }}</a></b></td>
+					<td><b>{{ card.BasicCardDescription }}</b></td>
+					<td><b>{% idToName None card.PermFXID "PermFX" %}</b></td>
+					<td style="width: 500px;"><b>{% idToDescription None card.PermFXID "PermFX" %}</b></td>
+					<td><b>{% idToName None card.TitanBirthID "titanBirth" %}</b></td>
+					<td><b>{% idToDescription None card.TitanBirthID "titanBirth" %}</b></td>
+					<td><image class=imgEnlarge src="{% url 'getImage' %}?ID={{card.BasicCardID}}"></image></td>
+				</tr>		
+				{% endfor %}
+			</table>
+			<form id="PageForm" placeholder="{{ CURRENT_PAGE }}" onchange="changePage(this.page.value)">
+				{% if CURRENT_PAGE > 0 %}
+					<a class="changePage" href="javascript:changePage({{ CURRENT_PAGE|add:'-1'}});" style="padding: 16px;">Previous</a>
+				{% endif %}
+				Page: 
+				<select name="page" id="PageSelect">
+					{% for page in TOTAL_PAGES %}
+					<option value="{{ page }}" placeholder="{{ page }}" {% if page == CURRENT_PAGE %} selected {% endif %}>{{ page }}</option>
+					{% endfor %}
+				</select>
+				{% if CURRENT_PAGE < LAST_PAGE %}
+					<a class="changePage" href="javascript:changePage({{ CURRENT_PAGE|add:'1'}});" style="padding: 16px;">Next</a>
+				{% endif %}
+			</form>
+		{% elif SEARCHED %}
+			<h1 id="NoResults">Your search returned no results</h1>
+		{% endif %}
+	</div>
+	<script>
+		function createSliders () {
+			this.sliders = document.getElementsByClassName("slider");
+			this.UiSliders = [];
+			this.sForm = document.getElementById("SearchForm");
+
+			this.makeSlider = function (ele) {
+				switch (ele.id) {
+					case "cardIdRange":
+						var maxRange = Number("{{ NUM_CARDS }}");
+						var minEle = this.sForm.idValueMin;
+						var maxEle = this.sForm.idValueMax;
+						break
+					case "attackRange":
+						var maxRange = Number("{{ attRanges.1 }}");
+						var minEle = this.sForm.attValueMin;
+						var maxEle = this.sForm.attValueMax;
+						break;
+					case "defenceRange":
+						var maxRange = Number("{{ defRanges.1 }}");
+						var minEle = this.sForm.defValueMin;
+						var maxEle = this.sForm.defValueMax;
+						break;
+					case "speedRange":
+						var maxRange = Number("{{ spdRanges.1 }}");
+						var minEle = this.sForm.spdValueMin;
+						var maxEle = this.sForm.spdValueMax;
+						break;
+					case "healthRange":
+						var maxRange = Number("{{ heaRanges.1 }}");
+						var minEle = this.sForm.heaValueMin;
+						var maxEle = this.sForm.heaValueMax;
+						break;
+					case "tpRange":
+						var maxRange = Number("{{ tpRanges.1 }}");
+						var minEle = this.sForm.tpValueMin;
+						var maxEle = this.sForm.tpValueMax;
+						break;
+				}
+
+				noUiSlider.create(ele, {
+				    start: [0, maxRange],
+				    connect: true,
+				    range: {
+				        'min': 0,
+				        'max': maxRange
+				    },
+				    step: 50
+				});
+
+				ele.setAttribute('disabled', true);
+
+				minEle.addEventListener('change', function () {
+					ele.noUiSlider.set(minEle.value);
+				});
+
+				maxEle.addEventListener('change', function() {
+					ele.noUiSlider.set([null, maxEle.value]);
+				});
+
+				ele.noUiSlider.on('update', function (values, handle) {
+					if (handle == 0) {
+						minEle.value = Number(values[0]);
+					} else { maxEle.value = Number(values[1]); }
+				});
+				return ele;
+			}
+
+			this.resetSliders = function () {
+				for (i=0; i<this.UiSliders.length; i++) {
+					this.UiSliders[i].noUiSlider.reset();
+					this.UiSliders[i].setAttribute('disabled', true);
+				}
+			}
+
+			for (i=0; i<this.sliders.length; i++) {
+				this.UiSliders.push(this.makeSlider(this.sliders[i]));
+			}
+		}
+
+		sliders = new createSliders();
+	</script>
+</body>

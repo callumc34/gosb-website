@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>Server Error: 500</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Somethings gone wrong">
+	<meta name="keywords" content="">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body, input, select {
+			font-family: GoT;
+		}
+
+		.text {
+			color: #D6A94A;
+			padding: 14px;
+		}
+
+		.boxText {
+			background-color: #231F20;
+			border: 3px solid #D6A94A;
+			box-sizing: content-box;
+			box-shadow: 4px 8px 16px 4px rgba(100, 100, 30, 0.5);
+			letter-spacing: 2px;
+		}
+
+		#Background {
+			background-color: #EAEAEA;
+		}
+
+		#Head {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 72px;
+			z-index: 9;
+		}
+
+		#Content {
+			padding: 84px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body id="Background">
+	<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+	<div id="Content">
+		<h1 class="boxText text"><u>Somethings gone wrong! Server Error: 500</u></h1>
+		<p class="boxText text">Something hasnt quite gone right on our end.<br>Please message a web dev through the discord to try and get some help!</p>
+		{% if ERROR %}
+			<div class="boxText">
+				<h2 class="text">Error message:</h2>
+				<p class="text">{{ ERROR }}</p>
+			</div>
+		{% endif %}"}
+	</div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>GoSB Card Browser</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Web view of all the MoSB CCG cards">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}Main/coreCSS.css?{% now 'U' %}">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body {
+			font-family: GoT;
+		}
+	</style>
+</head>
+<body id="Background">
+	<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+	<div id="Content">		
+		<div>
+			<form id="RangeForm" action="{% url 'cardList' %}" method="get">
+				<fieldset>
+					<legend>Card ranges:</legend>
+					From:
+					<input name="from" type="number" step="1" min="0" required="true" placeholder="{{ MIN_RANGE }}">
+					To:
+					<input name="to" type="number" step="1" min="0" required="true" placeholder="{{ MAX_RANGE }}">
+					<input type="submit" value="Enter">
+				</fieldset>
+			</form>
+		</div>
+		<table>
+			<b><caption>All currently available GoSB cards</caption></b>
+			<tr>
+				<th><b>Card ID</b></th>
+				<th><b>Card name</b></th>
+				<th><b>Card description</b></th>
+				<th><b>Power name</b></th>
+				<th><b>Power ability</b></th>
+				<th><b>Titan birth name</th></b>
+				<th><b>Titan birth ability</b></th>
+				<th><b>Card image</b></th>
+			</tr>				
+			{% for card in ALL_CARDS %}
+			<tr>
+				<td style="font-size: 20px;"><b>{{ card.BasicCardID }}</b></td>
+				<td><b><a href="../viewCard/?ID={{ card.BasicCardID }}">{{ card.BasicCardName }}</a></b></td>
+				<td><b>{{ card.BasicCardDescription }}</b></td>
+				<td><b>{% idToName None card.PermFXID "PermFX" %}</b></td>
+				<td style="width: 500px;"><b>{% idToDescription None card.PermFXID "PermFX" %}</b></td>
+				<td><b>{% idToName None card.TitanBirthID "titanBirth" %}</b></td>
+				<td><b>{% idToDescription None card.TitanBirthID "titanBirth" %}</b></td>
+				<td><image class=imgEnlarge src="{% url 'getImage' %}?ID={{card.BasicCardID}}"></image></td>
+
+			</tr>		
+			{% endfor %}
+
+		</table>	
+		<form id="PageForm" action="{% url 'getPage' %}" method="get" onchange="PageForm.submit()">
+			<a class="changePage" href='{% url "getPage" %}?page={{ CURRENT_PAGE|add:"-1"}}' style="padding: 16px;">Previous</a>
+			Page: 
+			<select name="page" id="PageSelect">
+				{% for page in TOTAL_PAGES %}
+					<option value="{{ page }}" placeholder="{{ page }}" {% if page == CURRENT_PAGE %} selected{% endif %}>{{ page }}</option>
+				{% endfor %}
+			</select>
+			<a class="changePage" href='{% url "getPage" %}?page={{ CURRENT_PAGE|add:"1" }}' style="padding: 16px;">Next</a>
+		</form>
+	</div>
+</body>

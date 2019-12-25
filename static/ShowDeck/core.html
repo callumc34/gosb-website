@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>{{ DECK.attributes.deckname }}</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Create a deck for the game of silly battles">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}ShowDeck/coreCSS.css?{% now 'U' %}">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body, input, select {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<div id="Content">
+		<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+		<h1 id="DeckHeader"><u>{{ DECK.attributes.deckname }}</u></h1>
+		<input type="button" id="RawButton" value="View raw file" onclick="window.open('/api/decks/text/?ID={{ ID }}', '_blank');">
+		<a href="/api/decks/text/?ID={{ ID }}" download="deck{{ ID }}.sbd"><input type="button" id="DownloadButton" value="Download deck"></a>
+		<a href="/deck/edit/?ID={{ ID }}"><input type="Button" id="EditDeck" value="Open deck in editor"></a>
+		<div class="boxText">
+			<div id="TagRow">
+				<h3 class="left"><u>Owner</u> = {{ DECK.attributes.owner }}</h3>
+				<h3 class="center"><u>Date published</u> = {{ DECK.attributes.date }}</h3>
+				<h3 class="right"><u>Deck ID</u> = {{ ID }}</h3>
+			</div>
+			{% for section, cards in DECK.deckDict.items %}
+				<table>
+					<b><caption>{{ section }}</caption></b>
+					<tr>
+						<th><b>Card count</b></th>
+						<th><b>Card ID</b></th>
+						<th><b>Card name</b></th>
+						<th><b>Card description</b></th>
+						<th><b>Power name</b></th>
+						<th><b>Titan birth name</th></b>
+						<th><b>Card image</b></th>
+					</tr>
+					{% for cardInfo in cards %}
+						{% for card, count in cardInfo.items %}
+							<tr>
+								<td style="font-size: 20px"><b>{{ count }}</b></td>
+								<td style="font-size: 20px;"><b>{{ card.BasicCardID }}</b></td>
+								<td><b><a href="../viewCard/?ID={{ card.BasicCardID }}">{{ card.BasicCardName }}</a></b></td>
+								<td><b>{{ card.BasicCardDescription }}</b></td>
+								<td><b>{% idToName None card.PermFXID "PermFX" %}</b></td>
+								<td><b>{% idToName None card.TitanBirthID "titanBirth" %}</b></td>
+								<td><image class=imgEnlarge src="{% url 'getImage' %}?ID={{card.BasicCardID}}"></image></td>
+							</tr>	
+						{% endfor %}
+					{% endfor %}
+				</table>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

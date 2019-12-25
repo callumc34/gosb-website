@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>GoSB Decks</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="View decks for the game of silly battles">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}DeckSearch/coreCSS.css?{% now 'U' %}">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body, input, select {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<div id="Content">
+		<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+		<div id="DeckButtons">
+			<a class="left" href="/deck/edit/"><input type="button" value="Deck Editor"></a>
+		</div>
+		<div class="boxText">
+			<h1><u>Deck Search</u></h1>
+			<form action="/deck/" method="get">
+				<fieldset>
+					<legend>Filter decks</legend>
+					Owner:
+					<input type="text" placeholder="Owner" name="owner"><br>
+					Deck name:
+					<input type="text" placeholder="Deck Name" name="deckName"><br>
+					Date:
+					<input type="date" name="date"><br>
+					<input type="reset" value="Reset">
+					<input type="submit" value="Submit">
+				</fieldset>
+			</form>
+			{% if DECKS %}
+				<table>
+					<caption>Found decks:</caption>
+					<tr>
+						<th>Deck ID</th>
+						<th>Deck Name</th>
+						<th>Deck Owner</th>
+						<th>Date Created</th>
+					</tr>
+					{% for deck in DECKS %}
+						<tr>
+							<td style="font-size: 30px;"><b>{{ deck.DeckId }}</b></td>
+							<td><a href="/deck/show/?ID={{ deck.DeckId }}"><b>{{ deck.DeckName }}</b></a></td>
+							<td><b>{{ deck.DeckOwner }}</b></td>
+							<td><b>{{ deck.DeckDate }}</b></td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% elif SEARCHED %}
+				<h1>No decks found</h1>
+			{% endif %}
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>{{ CARD.BasicCardName }}</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Advanced search for a GoSB card">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}ViewCard/coreCSS.css?{% now 'U' %}">
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+	<div id="Content">
+		<div class="box">
+			<h1><u>{{ CARD.BasicCardName }}<br></u></h1><h2>Collector Number: {{ CARD.CollectorNumber }}</h2>
+			<div id="Wrapper">
+				<div class="Col left" style="text-align: left;">
+					<h3 class="LeftText"><u>Description:</u></h3>
+					<p class="LeftText">{% if CARD.BasicCardDescription %}{{ CARD.BasicCardDescription }}{% else %}This card has no description.{% endif %}</p>
+					<h3 class="LeftText"><u>Card Type:</u></h3>
+					<p class="LeftText">{% idToName None CARD.CardTypeID "CardType" %}:<br><br>{% idToDescription None CARD.CardTypeID "CardType" %}<br></p>
+					<h3 class="LeftText"><u>Card Set:</u></h3>
+					<p class="LeftText">{% idToName None CARD.SetID "set" %}:<br><br>{% idToDescription None CARD.SetID "set" %}</p>
+					<h3 class="LeftText"><u>Team:</u></h3>
+					<p class="LeftText">{% idToName None CARD.TeamID "team" %}:<br><br>{% idToDescription None CARD.TeamID "team" %}</p>
+				</div>
+				<div class="Col center" style="text-align: center;">
+					<h3><u>Type 1:</u></h3>
+					<p>{% idToName None CARD.TypeID "type" %}:<br><br>{% idToDescription None CARD.TypeID "type" %}</p>
+					<h3><u>Type 2:</u></h3>
+					<p>{% idToName None CARD.Type2ID "type" %}:<br><br>{% idToDescription None CARD.Type2ID "type" %}</p>
+					<h3><u>Aspect:</u></h3>
+					<p>{% idToName None CARD.AspectID "aspect" %}:<br><br>{% idToDescription None CARD.AspectID "aspect" %}</p>
+					<h3><u>Titan Birth:</u></h3>
+					<p>{% idToName None CARD.TitanBirthID "titanBirth" %}:<br><br>{% idToDescription None CARD.TitanBirthID "titanBirth" %}</p>
+					<h3><u>Ability:</u></h3>
+					<p>{% idToName None CARD.PermFXID "PermFX" %}:<br><br>{% idToDescription None CARD.PermFXID "PermFX" %}</p>
+				</div>
+				<div class="Col right" style="vertical-align: middle;">
+					<table>
+						<tr style="width: 30%;">
+							<th>Card Image</th>
+						</tr>
+						<tr>
+							<td><img class="imgEnlarge" src="../cards/image?ID={{ CARD.BasicCardID }}"></td>
+						</tr>
+						<tr>
+							<th>Stats:</th>
+						</tr>
+						<tr>
+							<td>
+								Attack: {{ CARD.ATT }}<br>
+								Defence: {{ CARD.DEF }}<br>
+								Speed: {{ CARD.SPD }}<br>
+								Health: {{ CARD.HEA }}<br>
+								Total Points: {{ CARD.TotalPoints }}<br>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

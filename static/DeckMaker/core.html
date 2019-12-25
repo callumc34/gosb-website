@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load apiFunctions %}
+{% get_static_prefix as STATIC %}
+<head>
+	<title>GoSB Deck Maker</title>
+	<link rel="icon" href="{{ STATIC }}Global/icon.png">
+	<meta charset="UTF-8">
+	<meta name="description" content="Create a deck for the game of silly battles">
+	<meta name="keywords" content="">
+	<link href="{{ STATIC }}Global/uiSlider/nouislider.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{{ STATIC }}DeckMaker/coreCSS.css?{% now 'U' %}">
+	<script src="{{ STATIC }}DeckMaker/core.js?{% now 'U' %}"></script>
+	<style>
+		@font-face {
+			font-family: GoT;
+			src: url("{{ STATIC }}Fonts/GoT.ttf");
+		} 
+
+		@font-face {
+			font-family: LSRU;
+			src: url("{{ STATIC }}Fonts/l_10646.ttf");
+		}
+
+		body, input, select {
+			font-family: GoT;
+		}
+
+	</style>
+</head>
+<body id="Background">
+	<script src="{{ STATIC }}Global/uiSlider/nouislider.min.js"></script>
+	<div id="Content">
+		<object id="Head" data="{{ STATIC }}Global/Header.html?{% now 'U' %}">Your browser is outdated. This website may not function correctly</object>
+		<form action="/deck/edit/" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+			<input id="DeckInput" type="file" name="deckFile" value="Upload Deck">	
+			<input type="submit">		
+		</form>
+		{% if FILE_ERROR %}
+			<h1 style="color: #DD0A0A;text-align: center;">{{ FILE_ERROR }}</h1>
+		{% endif %}
+		<form id="SelectionForm">
+			<fieldset>
+				<legend>Filter cards</legend>				
+				Card name:
+				<input type="text" id="cardName" placeholder="Card Name">
+				Card's ablity:
+				<select type="text" id="abilityType">
+						<option>--Ignore--</option>
+					{% for fx in permFXs %}
+						<option value="{{ fx }}">{{ fx }}</option>
+					{% endfor %}
+				</select><br>
+				Card type:
+				<select type="text" id="cardType">
+						<option>--Ignore--</option>
+					{% for type in cardTypes %}
+						<option value="{{ type }}">{{ type }}</option>	
+					{% endfor %}
+				</select>
+				Type 1:
+				<select id="cardType1">
+					<option>--Ignore--</option>
+					{% for type in types %}
+						<option value="{{ type }}">{{ type }}</option>	
+					{% endfor %}			
+				</select>
+				Type 2:
+				<select id="cardType2">
+						<option>--Ignore--</option>
+					{% for type in types %}
+						<option value="{{ type }}">{{ type }}</option>
+					{% endfor %}			
+				</select><br>
+				Team:
+				<select id="teamId">
+						<option>--Ignore--</option>
+					{% for team in teams %}
+						<option value="{{ team }}">{{ team }}</option>
+					{% endfor %}
+				</select><br>
+				Card ID Range:
+				<div id="DualSlider"></div>
+				<input id="idValueMin" type="number" min="0" max="{{ NUM_CARDS }}" step="25" value="0">
+				<input id="idValueMax" type="number" min="0" max="{{ NUM_CARDS }}" step="25" value="50"><br>
+				<input type="reset" value="Reset" onclick="sliders.resetSliders()">
+				<input type="button" value="Submit" onclick="fetchCards();">
+			</fieldset>
+		</form>
+		<div id="TableDiv">
+			<table id="SelectionTable">
+				<b><caption>Card Selection</caption></b>
+				<tr>
+					<th><b>Card ID</b></th>
+					<th><b>Card name</b></th>
+				</tr>
+			</table>
+		</div>
+		<b id="CardCount">Card count: 0</b>
+		<form id="DeckList"> 
+			<div id="Regular monsters" class="deckSection">
+				<h1 class="deckHeader boxText">Regular Monsters</h1>
+				<ul class="deckList boxText">
+					{% for cards in DECK.REGULAR_MONSTERS %}
+						{% for card, count in cards.items %}
+							<li idvalue="{{ card.BasicCardID }}">
+								<img src="{% url 'getImage' %}?ID={{ card.BasicCardID }}" class="cardImage">
+								<input type="number" value="{{ count }}" min="0" max="{% if card.BasicCardID|isSwarm %}40{% else %}3{% endif %}" onchange="updateCard(this);" class="cardCount">
+							</li>
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div id="Titan monsters" class="deckSection">
+				<h1 class="deckHeader boxText">Titan Monsters</h1>
+				<ul class="deckList boxText">
+					{% for cards in DECK.TITAN_MONSTERS %}
+						{% for card, count in cards.items %}
+							<li idvalue="{{ card.BasicCardID }}">
+								<img src="{% url 'getImage' %}?ID={{ card.BasicCardID }}" class="cardImage">
+								<input type="number" value="{{ count }}" min="0" max="{% if card.BasicCardID|isSwarm %}40{% else %}3{% endif %}" onchange="updateCard(this);" class="cardCount">
+							</li>
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div id="Gear" class="deckSection">
+				<h1 class="deckHeader boxText">Gear</h1>
+				<ul class="deckList boxText">
+					{% for cards in DECK.GEAR %}
+						{% for card, count in cards.items %}
+							<li idvalue="{{ card.BasicCardID }}">
+								<img src="{% url 'getImage' %}?ID={{ card.BasicCardID }}" class="cardImage">
+								<input type="number" value="{{ count }}" min="0" max="{% if card.BasicCardID|isSwarm %}40{% else %}3{% endif %}" onchange="updateCard(this);" class="cardCount">
+							</li>
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div id="Magic" class="deckSection">
+				<h1 class="deckHeader boxText">Magic</h1>
+				<ul class="deckList boxText">
+					{% for cards in DECK.MAGIC %}
+						{% for card, count in cards.items %}
+							<li idvalue="{{ card.BasicCardID }}">
+								<img src="{% url 'getImage' %}?ID={{ card.BasicCardID }}" class="cardImage">
+								<input type="number" value="{{ count }}" min="0" max="{% if card.BasicCardID|isSwarm %}40{% else %}3{% endif %}" onchange="updateCard(this);" class="cardCount">
+							</li>
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div id="Event" class="deckSection">
+				<h1 class="deckHeader boxText">Events</h1>
+				<ul class="deckList boxText">
+					{% for cards in DECK.EVENT %}
+						{% for card, count in cards.items %}
+							<li idvalue="{{ card.BasicCardID }}">
+								<img src="{% url 'getImage' %}?ID={{ card.BasicCardID }}" class="cardImage">
+								<input type="number" value="{{ count }}" min="0" max="{% if card.BasicCardID|isSwarm %}40{% else %}3{% endif %}" onchange="updateCard(this);" class="cardCount">
+							</li>
+						{% endfor %}
+					{% endfor %}
+				</ul>
+			</div>
+			<div id="Tags" class="deckSection">
+				<h1 class="deckHeader boxText">Deck Tags:</h1>
+				<div id="TagList" class="boxText">
+					<b>Owner:</b>
+					<input id="OwnerInput" type="text" placeholder="Owner" {% if TAGS.owner %}value="{{ TAGS.owner }}"{% endif %}><br>
+					<b>Deck name:</b>
+					<input id="DeckNameInput" type="text" placeholder="Deck name" {% if TAGS.deckname %}value="{{ TAGS.deckname }}"{% endif %}>
+					<div style="text-align: center;padding-top: 130px;">
+						<input type="reset" name="resetButton" value="Reset All">
+						<input type="button" name="submitButton" value="Submit Deck" onclick="submitDeck();">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>	
+	<script>
+		sliderEle = document.getElementById("DualSlider");
+		noUiSlider.create(sliderEle, {
+			start: [0, 50],
+			connect: true,
+			range: {
+				'min' : 0,
+				'max' : Number("{{ NUM_CARDS }}")
+			},
+			step: 25
+		});
+
+		minEle = document.getElementById("idValueMin");
+		maxEle = document.getElementById("idValueMax");
+
+		sliderEle.noUiSlider.on('update', function (values, handle) {
+			if (handle == 0) {
+				minEle.value = Number(values[0]);
+			} else { maxEle.value = Number(values[1]); }
+		});
+
+		minEle.addEventListener("change", function() {
+			sliderEle.noUiSlider.set(minEle.value);
+		});
+
+		maxEle.addEventListener("change", function() {
+			sliderEle.noUiSlider.set([null, maxEle.value]);
+		});
+
+
+		fetchCards();
+	</script>
+</body>

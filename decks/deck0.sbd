@@ -1,0 +1,52 @@
+/ / denotes a comment
+/ # Denotes a tag
+/ Note: whitespace must be both sides of the equals sign
+/ -% BEGIN DECK %- denotes the start of the deck
+/ -% END DECK %- denotes the end of the deck
+/ & ID denotes a card
+/ * {Count} denotes how many of a card are given
+/ if no star following a card ID 1(one) will be presumed
+/ [Card Type] denotes a new section of cards 
+/ Note: Case does not matter for any section
+/ All decks must contain 40 cards
+/ All decks must contain at least 4 regular monsters
+/ No more than 3 type of any card
+/ Cards with the swarm ability ignore the 3 of one card rule
+
+
+/ White space lines are ignored
+/ Note: this is purely a test deck not one that has any gameplay use
+
+/Only three tags that are used
+#Owner = mrdeadguy34 /Owner to be attributed to the deck
+#DeckName = first deck /Name given to the deck
+#Date = 15-12-2019 /Date is formatted dd-mm-year
+-% BEGIN DECK %-
+
+[Regular Monsters] /Begin regular monster section
+& 1 * 2 /This is an id of 1 with 2 counts for the card
+& 2 * 3
+& 3 * 3
+& 435 * 8
+
+[Titan Monsters] /Note: You have to have a section to denote the cards
+& 158 * 2 /However you do not have to have all sections
+& 328 * 3
+& 490 * 4
+
+[Gear]
+& 218 * 3
+& 219 * 3
+& 225
+
+[Magic]
+& 200
+& 205 * 2
+
+[Event]
+& 235 * 2
+& 240 * 2
+& 244
+
+-% END DECK %- /All lines after this are ignored
+/ As these lines are ignored no tags can be made here

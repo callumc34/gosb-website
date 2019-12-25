@@ -1,0 +1,129 @@
+table, th, td {
+    border: 3px solid #D6A94A;
+    border-collapse: collapse;
+    text-align: center;
+    padding: 4px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+td, th {
+	color: #D6A94A;
+	background-color: #231F20;
+	font-size: 20px;
+}
+
+caption {
+	font-size: 28px;
+	color: #EAEAEA;
+	padding: 12px;
+}
+
+form {
+	text-align: center;
+}
+
+select {
+	font-size: 14px;
+	background-color: #231F20;
+	color: #D6A94A;
+	letter-spacing: 2px;
+	padding: 6px;
+}
+
+input {
+	font-size: 20px;
+	background-color: #231F20;
+	color: #D6A94A;
+	letter-spacing: 1px;
+	padding: 6px;
+	margin: 8px;
+}
+
+fieldset {
+	font-size: 16px;
+	letter-spacing: 1px;
+	color: #EAEAEA;
+}
+
+legend {
+	font-size: 24px;
+	letter-spacing: 1px;
+}
+
+a {
+	color: #D6A94A;
+}
+
+a:hover {
+	color: #EAEAEA;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color:#D6A94A;
+	padding: 8px;
+	text-align: center;
+}
+
+.boxText {
+	background-color: #231F20;
+	border: 3px solid #D6A94A;
+	box-sizing: content-box;
+	box-shadow: 4px 8px 16px 4px rgba(100, 100, 30, 0.5);
+	letter-spacing: 2px;
+	padding: 12px;
+}
+
+.center {
+	margin-right: auto;
+	margin-left: auto;
+	width: 30%;
+	display: inline-block;
+	word-wrap: break-word;
+	text-align: center;
+}
+
+.right {
+	margin-right: 0;
+	margin-left: auto;
+	width: 30%;
+	display: inline-block;
+	word-wrap: break-word;
+	text-align: right;
+}
+
+.left {
+	margin-left: 0;
+	margin-right: auto;
+	width: 30%;
+	display: inline-block;
+	word-wrap: break-word;
+}
+
+#Background {
+	background-color: #EAEAEA;
+}
+
+#Head {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 72px;
+	z-index: 9;
+}
+
+#Content {
+	padding: 84px 16px 16px 16px;
+	align-content: center;
+	align-items: center;
+}
+
+#DeckButtons {
+	width: 100%
+}
